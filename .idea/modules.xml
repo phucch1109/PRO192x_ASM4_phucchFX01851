@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/PRO192x_ASM4_phucchFX01851.iml" filepath="$PROJECT_DIR$/.idea/PRO192x_ASM4_phucchFX01851.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vn.funix.phucchFX01851.java/asm01/asm01.iml" filepath="$PROJECT_DIR$/vn.funix.phucchFX01851.java/asm01/asm01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vn.funix.phucchFX01851.java/asm02/asm02.iml" filepath="$PROJECT_DIR$/vn.funix.phucchFX01851.java/asm02/asm02.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vn.funix.phucchFX01851.java/asm03/asm03.iml" filepath="$PROJECT_DIR$/vn.funix.phucchFX01851.java/asm03/asm03.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vn.funix.phucchFX01851.java/asm04/asm04.iml" filepath="$PROJECT_DIR$/vn.funix.phucchFX01851.java/asm04/asm04.iml" />
+    </modules>
+  </component>
+</project>

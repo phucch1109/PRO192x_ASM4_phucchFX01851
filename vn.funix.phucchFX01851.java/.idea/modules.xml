@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/asm01/asm01.iml" filepath="$PROJECT_DIR$/asm01/asm01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/asm02/asm02.iml" filepath="$PROJECT_DIR$/asm02/asm02.iml" />
+      <module fileurl="file://$PROJECT_DIR$/asm3/asm3.iml" filepath="$PROJECT_DIR$/asm3/asm3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vn.funix.FX01851.java.iml" filepath="$PROJECT_DIR$/vn.funix.FX01851.java.iml" />
+    </modules>
+  </component>
+</project>
