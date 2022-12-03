@@ -11,7 +11,7 @@ public class LoanAccountTest {
 
     @org.junit.Before
     public void setUp() throws Exception {
-        loanAccount = new LoanAccount("111111");
+        loanAccount = new LoanAccount("111111111111","111111");
         System.out.println(100000000-99940000);
     }
 

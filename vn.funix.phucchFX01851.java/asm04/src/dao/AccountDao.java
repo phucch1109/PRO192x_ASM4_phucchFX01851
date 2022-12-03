@@ -4,16 +4,17 @@ import Asm2.Account;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileSystemNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDao {
     private final static String FILE_PATH = ".\\vn.funix.phucchFX01851.java\\store\\accounts.dat";
-    public static void save(List<Account> accounts) throws IOException {
+    public static void save(List<Account> accounts) {
         File file = new File(FILE_PATH);
-        file.createNewFile();
-        System.out.println("save in: " + file.getAbsolutePath());
+        System.out.println("Accounts data saved in: " + file.getAbsolutePath());
         BinaryFileService.writeFile(file.getAbsolutePath(),accounts);
     }
     public static List<Account> list() {
@@ -35,10 +36,6 @@ public class AccountDao {
         if(isNew) {
             accounts.add(editAccount);
         }
-        try {
             save(accounts);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

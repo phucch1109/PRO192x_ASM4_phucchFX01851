@@ -2,15 +2,19 @@ package dao;
 
 import Models.Transaction;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 public class TransactionDao {
-    private final static String FILE_PATH = "store\\customers.dat";
-    public static void save(List<Transaction> customers) throws IOException {
+    private final static String FILE_PATH = ".\\vn.funix.phucchFX01851.java\\store\\transactions.dat";
+    public static void save(List<Transaction> customers) {
+        File file = new File(FILE_PATH);
+        System.out.println("Transaction data saved in: " + file.getAbsolutePath());
         BinaryFileService.writeFile(FILE_PATH,customers);
     }
     public static List<Transaction> list() {
-        return BinaryFileService.readFile(FILE_PATH);
+        File yourFile = new File(FILE_PATH);
+        return BinaryFileService.readFile(yourFile.getAbsolutePath());
     }
 }

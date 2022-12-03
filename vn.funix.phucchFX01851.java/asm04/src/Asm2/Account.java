@@ -1,9 +1,10 @@
 package Asm2;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Account implements Serializable {
-    static final long serialVersionUID = 112;
+    static final long serialVersionUID =112;
     private String customerId;
     private String accountNumber;
     private double balance;

@@ -20,9 +20,9 @@ public class BinaryFileService {
         } catch (EOFException e) {
             return new ArrayList<>();
         } catch (IOException io) {
-            System.out.println("OI exception" + io.getMessage());
+            System.out.println("Không tìm thấy file " + filePath);
         } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFoundException: ");
+            System.out.println("ClassNotFoundException: "+e.getMessage());
         }
         return objects;
     }
@@ -34,6 +34,7 @@ public class BinaryFileService {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println(e);
         }
     }
 

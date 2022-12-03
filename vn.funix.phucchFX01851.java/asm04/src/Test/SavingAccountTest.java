@@ -9,8 +9,8 @@ public class SavingAccountTest {
     SavingAccount savingAccountNormal,savingAccountPremium;
     @org.junit.Before
     public void setUp() throws Exception {
-         savingAccountPremium = new SavingAccount("111111",20000000);
-         savingAccountNormal = new SavingAccount("222222",9000000);
+         savingAccountPremium = new SavingAccount("111111111111","111111",20000000);
+         savingAccountNormal = new SavingAccount("111111111111","222222",9000000);
     }
 
     @Test

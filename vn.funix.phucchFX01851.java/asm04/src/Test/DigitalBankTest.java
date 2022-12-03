@@ -12,9 +12,9 @@ public class DigitalBankTest {
     @Before
     public void setUp() throws Exception {
         bank= new DigitalBank();
-        bank.addCustomer("111111111111","happy");
-        bank.addLoanAccount("111111111111", "151651");
-        bank.addSavingAccount("111111111111", "895545", 2849000);
+
+
+
     }
 
     @Test

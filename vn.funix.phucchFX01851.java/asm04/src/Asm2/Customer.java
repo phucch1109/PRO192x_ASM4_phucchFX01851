@@ -1,16 +1,29 @@
 package Asm2;
 
+import dao.AccountDao;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Customer extends User implements Serializable {
     static final long serialVersionUID = 112;
-    private final List<Account> accounts;
+    private List<Account> accounts;
 
     public Customer(String name, String id) {
         super(name, id);
         accounts = new ArrayList<>();
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public void importDataAccounts() {
+        List<Account> accountList = AccountDao.list();
+        List<Account> accountList1 = accountList.stream().filter(account -> account.getCustomerId().equals(this.getCustomerId())).collect(Collectors.toList());
+        this.accounts = accountList1;
     }
 
     // Customer(List<String> values) để phục vụ việc đọc dữ liệu từ file text
@@ -29,6 +42,7 @@ public class Customer extends User implements Serializable {
         }
         return "Normal";
     }
+
 
     public boolean addAccount(Account account) {
         for (Account i :
@@ -60,6 +74,16 @@ public class Customer extends User implements Serializable {
             for (int i = 0; i < accounts.size(); i++) {
                 System.out.printf("%-6d%6s%3s%42.2f%1s\n", i + 1, accounts.get(i).getAccountNumber(), " | ", accounts.get(i).getBalance(), "đ");
             }
+    }
+    //Phương thưức kiểm tra số TK trong customer
+    public boolean isAccountExisted(String accountNumber) {
+        if(accounts.size()!=0) {
+            for (Account account:accounts
+                 ) {
+                if(account.getAccountNumber().equals(accountNumber)) return true;
+            }
+        }
+        return false;
     }
 
 
