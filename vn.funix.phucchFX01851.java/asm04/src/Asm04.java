@@ -6,14 +6,9 @@ import Models.DigitalBank;
 import Models.Transaction;
 import dao.AccountDao;
 import dao.CustomerDao;
-import dao.TextFileService;
 import dao.TransactionDao;
 import exception.CustomerIdNotValidException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -24,9 +19,9 @@ public class Asm04 {
 
     static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         digitalBank = new DigitalBank();
-       // initialTestData();
+        // initialTestData();
         int input = -1;
         boolean firstInput = true;
         //Vong lap menu
@@ -62,10 +57,6 @@ public class Asm04 {
                 case 0:
                     System.out.println("Ket thuc chuong trinh");
                     break;
-                case 666:
-                    unseenDepositFunc();
-                    firstInput = true;
-                    break;
                 default:
                     System.out.println("Nhap sai gia tri, hay nhap lai");
                     break;
@@ -79,10 +70,10 @@ public class Asm04 {
     //function ask user for number input and return number-only string
     //this function won't end until user input correct or return null if user input 'NO'
     //param int length: value used for measure string length
-    public static String selfEnterUserIDnumber(int length,String extraDescription) {
+    public static String selfEnterUserIDnumber(int length, String extraDescription) {
         String input;
         do {
-            System.out.print("Vui long nhap ma STK "+ extraDescription +" gom " + length + " chu so:");
+            System.out.print("Vui long nhap ma STK " + extraDescription + " gom " + length + " chu so:");
             input = sc.next();
             if (!input.matches("[0-9]+")) System.out.println("hay nhap so!! (hoac nhap NO de thoat)");
             else if (input.length() != length)
@@ -93,7 +84,6 @@ public class Asm04 {
     }
 
     public static String selfEnterUserIDnumber() {
-        //Scanner sc = new Scanner(System.in);
         String input;
         do {
             System.out.print("Vui long nhap so CCCD :");
@@ -126,7 +116,7 @@ public class Asm04 {
     }
 
     //second function
-    public static void importNewCustomers() throws FileNotFoundException, InputMismatchException {
+    public static void importNewCustomers() {
         //ask for filepath
         System.out.println("Nhập đường dẫn đến tệp: ");
         String inputPath = sc.next();
@@ -142,9 +132,9 @@ public class Asm04 {
         do {
             customerId = selfEnterUserIDnumber();
             if (customerId == null) return;
-            try{
+            try {
                 customerExisted = DigitalBank.isCustomerIdExisted(customerList, customerId);
-            }catch (CustomerIdNotValidException ex){
+            } catch (CustomerIdNotValidException ex) {
                 System.out.println("Không có khách hàng nào có số CMT trên");
             }
         } while (!customerExisted);
@@ -154,7 +144,7 @@ public class Asm04 {
         boolean existed;
         List<Account> accountList = AccountDao.list();
         do {
-            accountNumber = selfEnterUserIDnumber(6,"");
+            accountNumber = selfEnterUserIDnumber(6, "");
             if (accountNumber == null) return;
             existed = DigitalBank.isAccountNumberExisted(accountList, accountNumber);
             if (existed) System.out.println("số TK này đã tồn tại, hãy nhập số khác");
@@ -163,41 +153,42 @@ public class Asm04 {
         do {
             amount = MiscFunction.doubleInput(sc, "Nhập số dư : ");
             if (amount == 0) return;
-            if(amount<50000) System.out.println("Số dư phải lớn hơn 50.000đ");
-        } while (amount<50000);
+            if (amount < 50000) System.out.println("Số dư phải lớn hơn 50.000đ");
+        } while (amount < 50000);
         //Execute
-        DigitalBank.addSavingAccount(customerId,accountNumber,amount);
+        DigitalBank.addSavingAccount(customerId, accountNumber, amount);
         System.out.println("tạo tài khoản ATM thành công");
     }
+
     //Forth function
     public static void transferAccount() {
         //Check if is there enough data to work with
         List<Customer> customerList = CustomerDao.list();
         List<Account> accountList = AccountDao.list();
-        if (customerList.size()<1 || accountList.size()<2) {
+        if (customerList.size() < 1 || accountList.size() < 2) {
             System.out.println("Không có đủ khách hàng/tài khoản để thực hiện ");
             return;
         }
         //get customerID
         String customerId;
-        boolean customerExisted =false;
+        boolean customerExisted = false;
         do {
             customerId = selfEnterUserIDnumber();
             if (customerId == null) return;
-            try{
+            try {
                 customerExisted = DigitalBank.isCustomerIdExisted(customerList, customerId);
-            }catch (CustomerIdNotValidException ex){
+            } catch (CustomerIdNotValidException ex) {
                 System.out.println("Không có khách hàng nào có số CMT trên");
             }
         } while (!customerExisted);
         //display sender's account
-        Customer customer = DigitalBank.getCustomerById(customerList,customerId);
+        Customer customer = DigitalBank.getCustomerById(customerList, customerId);
         customer.displayInformation();
         //get sender account number from user input
         String accountNumber;
         boolean existed;
         do {
-            accountNumber = selfEnterUserIDnumber(6,"của ngưởi gửi");
+            accountNumber = selfEnterUserIDnumber(6, "của ngưởi gửi");
             if (accountNumber == null) return;
             existed = customer.isAccountExisted(accountNumber);
             if (!existed) System.out.println("khách hàng không có số tài khoản đó");
@@ -205,40 +196,43 @@ public class Asm04 {
         //get receiver account number from user input
         String accountNumber2;
         do {
-            accountNumber2 = selfEnterUserIDnumber(6,"của người nhận");
+            accountNumber2 = selfEnterUserIDnumber(6, "của người nhận");
             if (accountNumber2 == null) return;
-            existed = DigitalBank.isAccountNumberExisted(accountList,accountNumber2);
+            existed = DigitalBank.isAccountNumberExisted(accountList, accountNumber2);
             if (!existed) System.out.println("khách hàng không có số tài khoản đó");
-            if(accountNumber2.equals(accountNumber)){
+            if (accountNumber2.equals(accountNumber)) {
                 existed = false;
                 System.out.println("Tài khoản nhận không được trùng với tài khoản gửi");
             }
         } while (!existed);
         //get amount
-        Account senderAccount = DigitalBank.getAccountByAccountNumber(accountList,accountNumber);
+        Account senderAccount = DigitalBank.getAccountByAccountNumber(accountList, accountNumber);
         double amount;
         do {
             amount = MiscFunction.doubleInput(sc, "Nhập số dư : ");
             if (amount == 0) return;
-            if((senderAccount.getBalance()-amount)<50000) System.out.println("Số dư còn lại phải lớn hơn 50.000đ");
-        } while ((senderAccount.getBalance()-amount)<50000);
+            if ((senderAccount.getBalance() - amount) < 50000) System.out.println("Số dư còn lại phải lớn hơn 50.000đ");
+        } while ((senderAccount.getBalance() - amount) < 50000);
         //confirming transfer
-        System.out.println("Nhập Y để xác nhận chuyển " + amount + "đ từ TK "+accountNumber+ " đến TK " +accountNumber2);
+        System.out.println("Nhập Y để xác nhận chuyển " + amount + "đ từ TK " + accountNumber + " đến TK " + accountNumber2);
         sc.nextLine();
         String confirmInput = sc.nextLine();
         if (!confirmInput.equalsIgnoreCase("y")) return;
-        //executing
-        Account receiverAccount = DigitalBank.getAccountByAccountNumber(accountList,accountNumber2);
-        senderAccount.setBalance(senderAccount.getBalance()-amount);
+        //executing-----
+        Account receiverAccount = DigitalBank.getAccountByAccountNumber(accountList, accountNumber2);
+        //editing account
+        senderAccount.setBalance(senderAccount.getBalance() - amount);
         AccountDao.update(senderAccount);
-        receiverAccount.setBalance(receiverAccount.getBalance()+amount);
+        receiverAccount.setBalance(receiverAccount.getBalance() + amount);
         AccountDao.update(receiverAccount);
+        //Adding transaction
         List<Transaction> transactionList = TransactionDao.list();
-        transactionList.add(new Transaction(accountNumber,-(amount),true,"Transfers"));
-        transactionList.add(new Transaction(accountNumber2,amount,true,"Transfers"));
+        transactionList.add(new Transaction(accountNumber, -(amount), true, "Transfers"));
+        transactionList.add(new Transaction(accountNumber2, amount, true, "Transfers"));
         TransactionDao.save(transactionList);
+        //print result
         System.out.println("Đã chuyển tiền thành công, biên lai giao dịch:");
-        DigitalBank.printReceipt(accountNumber,accountNumber2,amount,senderAccount.getBalance());
+        DigitalBank.printReceipt(accountNumber, accountNumber2, amount, senderAccount.getBalance());
     }
 
 
@@ -251,21 +245,21 @@ public class Asm04 {
         do {
             customerId = selfEnterUserIDnumber();
             if (customerId == null) return;
-            try{
+            try {
                 customerExisted = DigitalBank.isCustomerIdExisted(customerList, customerId);
-            }catch (CustomerIdNotValidException ex){
+            } catch (CustomerIdNotValidException ex) {
                 System.out.println("Không có khách hàng nào có số CMT trên");
             }
         } while (!customerExisted);
         //display sender's account
-        Customer customer = DigitalBank.getCustomerById(customerList,customerId);
+        Customer customer = DigitalBank.getCustomerById(customerList, customerId);
         customer.displayInformation();
         //get account number from user input
         String accountNumber;
         double amount;
         boolean existed;
         do {
-            accountNumber = selfEnterUserIDnumber(6,"");
+            accountNumber = selfEnterUserIDnumber(6, "");
             if (accountNumber == null) return;
             existed = customer.isAccountExisted(accountNumber);
             if (!existed) System.out.println("so TK nay khong ton tai");
@@ -288,10 +282,10 @@ public class Asm04 {
             customerId = selfEnterUserIDnumber();
             if (customerId == null) return;
             customerExisted = DigitalBank.isCustomerIdExisted(customerList, customerId);
-            if(!customerExisted) System.out.println("Không có khách hàng nào có số CMT trên");
+            if (!customerExisted) System.out.println("Không có khách hàng nào có số CMT trên");
         } while (!customerExisted);
         //display customer's account
-        Customer customer = DigitalBank.getCustomerById(customerList,customerId);
+        Customer customer = DigitalBank.getCustomerById(customerList, customerId);
         customer.displayInformation();
         DigitalBank.showTransactionByCustomer(customer);
 
@@ -307,7 +301,5 @@ public class Asm04 {
         DigitalBank.addSavingAccount("111111111111", "123476", 50000000);
     }
 
-    public static void unseenDepositFunc() {
 
-    }
 }

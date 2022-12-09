@@ -5,6 +5,7 @@ import Asm2.Bank;
 import Asm2.Customer;
 import dao.AccountDao;
 import dao.CustomerDao;
+import dao.TransactionDao;
 import exception.CustomerIdNotValidException;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.util.*;
 
 public class DigitalBank extends Bank {
 
-    //Phương thức showCustomers()
+    //Phương thức showCustomers() in ra thông tin khách hàng và cả tài khoản
     public static void showCustomers() {
         List<Customer> customerList = CustomerDao.list();
         if (customerList.size() == 0) {
@@ -51,14 +52,14 @@ public class DigitalBank extends Bank {
         }
     }
 
-    //Phương thức addCustomers(fileName)
+    //Phương thức addCustomers(fileName) lấy đường dẫn đễ tìm file txt chứa thông tin khách hàng mới
     public static void addCustomer(String inputPath) {
         List<Customer> customerList = CustomerDao.list();
         //get relative path
         File f = new File("");
         String rootPath = f.getAbsolutePath() + "\\vn.funix.phucchFX01851.java\\";
         inputPath = Models.MiscFunction.convertSlashesToDoubleBackSlash(inputPath);//convert forward slash to back slash
-        inputPath = "store\\customers.txt";//HARDCODE REMOVE BEFORE SUBMITTING
+        //inputPath = "store\\customers.txt";//HARDCODE REMOVE BEFORE SUBMITTING
         //reading file
         try (Scanner sc = new Scanner(new FileReader(rootPath + inputPath))) {
             //importing customer using comma as delimiter
@@ -78,8 +79,10 @@ public class DigitalBank extends Bank {
                 if (!existed) {
                     customerList.add(new DigitalCustomer(name, customerId));
                     System.out.println("Thêm khách hàng " + name + " thành công");
-                } else System.out.println("Thêm khách hàng " + name + " thất bại");
+                } else System.out.println("Thêm khách hàng " + name + " thất bại (khách hàng này đã có trong database)");
             }
+            //Saving customers list to a file
+            CustomerDao.save(customerList);
             //catching ex
         } catch (FileNotFoundException e) {
             System.out.println("Tệp không tồn tại");
@@ -90,12 +93,12 @@ public class DigitalBank extends Bank {
             System.out.println("File Thiếu dấu ,");
             System.out.println(e);
         }
-        //Saving customers list to a file
-        CustomerDao.save(customerList);
+
+
     }
 
 
-    //Phương thức getCustomerById(List<Customer> customerList, String customerId)
+    //Phương thức nhận danh sách khách hàng và kiểm tra CCCD nhận được có tồn tại trong danh sách đó ko
     public static Customer getCustomerById(List<Customer> customerList, String customerId) {
         Customer customer = null;
         for (Customer i : customerList) {
@@ -104,12 +107,12 @@ public class DigitalBank extends Bank {
                 break;
             }
         }
-
         if(customer!= null) customer.importDataAccounts();
         else throw new CustomerIdNotValidException("Không có khách hàng nào có số CMT trên");
         return customer;
     }
 
+    //Phương thức thực hiện rút tiền
     public static boolean withdrawAccount(Customer customer, String accountNumber, double amount) {
         if (!(customer instanceof DigitalCustomer)) return false ;
         DigitalCustomer digitalCustomer = (DigitalCustomer) customer;
@@ -119,12 +122,13 @@ public class DigitalBank extends Bank {
         return false;
     }
 
-
+    //Phương thức thực hiện lưu tài khoản ATM
     public static void addSavingAccount(String customerId,String accountNumber,double amount) {
         SavingAccount account = new SavingAccount(customerId, accountNumber, amount);
         AccountDao.update(account);
     }
 
+    //Phương thức kiểm tra danh sách tài khoản
     public static boolean isAccountNumberExisted(List<Account> accountsList, String accountNumber) {
 //        for (Account account :
 //                accountsList) {
@@ -137,7 +141,7 @@ public class DigitalBank extends Bank {
     }
 
 
-    //Phương thức isCustomerExisted(List<Customer> customers, Customer newCustomer)
+    //Phương thức kiểm tra danh sách khách hàng
     public static boolean isCustomerIdExisted(List<Customer> customerList, String customerId) {
 //        for (Customer customer :
 //                customerList) {
@@ -150,6 +154,7 @@ public class DigitalBank extends Bank {
         return true;
     }
 
+    //Phương thức trả lại đối tượng khách hàng
     public static Account getAccountByAccountNumber(List<Account> accountsList, String accountNumber) {
         for (Account account :
                 accountsList) {
@@ -160,6 +165,7 @@ public class DigitalBank extends Bank {
         return null;
     }
 
+    //in Bee
     public static void printReceipt (String senderAccount,String receiverAccount,double amount, double balanceRemain){
         System.out.println("-------------+-----------+---------------");
         System.out.printf("%30s\n", "BIEN LAI GIAO DICH SAVINGS");
@@ -184,4 +190,5 @@ public class DigitalBank extends Bank {
         if (digitalCustomer !=null)
         digitalCustomer.displayTransactionsList();
     }
+
 }

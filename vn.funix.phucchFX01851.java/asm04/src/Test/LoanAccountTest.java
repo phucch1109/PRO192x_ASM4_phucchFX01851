@@ -17,9 +17,9 @@ public class LoanAccountTest {
 
     @org.junit.Test
     public void isPremium() {
-        assertFalse(loanAccount.isPremium());
-        loanAccount.setBalance(20000000);
         assertTrue(loanAccount.isPremium());
+        loanAccount.setBalance(200000);
+        assertFalse(loanAccount.isPremium());
 
     }
 
@@ -31,15 +31,15 @@ public class LoanAccountTest {
 
     @org.junit.Test
     public void transactionFee() {
-        assertEquals(5000, loanAccount.transactionFee(100000),0.001);
-        loanAccount.setBalance(20000000);
         assertEquals(1000, loanAccount.transactionFee(100000),0.001);
+        loanAccount.setBalance(200000);
+        assertEquals(5000, loanAccount.transactionFee(100000),0.001);
     }
 
     @org.junit.Test
     public void isAccepted() {
         //kiem tra duoi 50000
-        assertFalse(loanAccount.isAccepted(40000));
+        assertTrue(loanAccount.isAccepted(40000));
         //kiem tra qua han muc 100000000
         assertFalse(loanAccount.isAccepted(100000000));
         //kiem tra han muc con lai ko qua 50000(tinh ca transactionFee)
